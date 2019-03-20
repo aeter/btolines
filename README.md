@@ -1,8 +1,6 @@
 # btolines
 
-[WIP] :question: :notes: :whale2: :hourglass:
-
-Boot to lines.
+Boot to lines. :notes: :whale2: :hourglass:
 
 ## Running
 
