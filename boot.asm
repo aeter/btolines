@@ -56,9 +56,9 @@ START:
         int 10h ; https://en.wikipedia.org/wiki/INT_10H
 
     .draw_lines_loop:
-    call draw_line
-    sleep ; so we don't use 100% CPU
-    jmp .draw_lines_loop
+        call draw_line
+        sleep ; so we don't use 100% CPU
+        jmp .draw_lines_loop
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Functions :) ;;;;
@@ -66,7 +66,7 @@ START:
 
 ; draw_line()
 draw_line:
-    enter 0, 0
+    enter 0, 0 ; setup stack frame
 
     .set_random_startx:
         make_random_number screen_width_in_pixels
@@ -80,24 +80,25 @@ draw_line:
         make_random_number max_colors
         mov bx, ax
 
-    .set_line_length_counter:
+    .line_length_in_pixels_counter:
         mov ax, 0
 
     .draw_pixels_loop:
         inc cx ; next pixel x
         inc dx ; next pixel y
-        inc ax ; line_length_counter
+        inc ax ; line_length_in_pixels_counter
         cmp ax, max_line_length_in_pixels
         je .return
         call_draw_pixel cx, dx, bx ; draw_pixel(next_pixel_x, next_pixel_y, color)
         jmp .draw_pixels_loop
+
     .return:
         leave
         ret
 
 ; draw_pixel(x, y, color)
 draw_pixel:
-    enter 0, 0
+    enter 0, 0 ; setup stack frame
     mov cx, [bp + 4] ; x
     mov dx, [bp + 6] ; y
     mov bx, [bp + 8] ; color
