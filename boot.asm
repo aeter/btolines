@@ -10,7 +10,6 @@ SETUP:
 %macro call_draw_pixel 3 ; 3 parameters
     ; save registers modified by draw_pixel
     push ax
-    push bx
     push cx
     push dx
 
@@ -27,7 +26,6 @@ SETUP:
     ; restore saved registers
     pop dx
     pop cx
-    pop bx
     pop ax
 %endmacro
 
@@ -67,6 +65,7 @@ START:
 ; draw_line()
 draw_line:
     enter 0, 0 ; setup stack frame
+    push bx
 
     .set_random_startx:
         make_random_number screen_width_in_pixels
@@ -93,12 +92,14 @@ draw_line:
         jmp .draw_pixels_loop
 
     .return:
+        pop bx
         leave
         ret
 
 ; draw_pixel(x, y, color)
 draw_pixel:
     enter 0, 0 ; setup stack frame
+    push bx
     mov cx, [bp + 4] ; x
     mov dx, [bp + 6] ; y
     mov bx, [bp + 8] ; color
@@ -109,6 +110,7 @@ draw_pixel:
     mov bh, 1 ; page number
     int 10h
 
+    pop bx
     leave
     ret
 
