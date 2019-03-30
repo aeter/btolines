@@ -31,9 +31,13 @@ SETUP:
 
 %macro make_random_number 1 ; 1 params (for the upper limit of the number)
     push dx
+    push bx
+
     rdtsc      ; changes ax and dx
     mov bx, %1 
     div bx     ; divides ax by bx, ax holds the remainder
+
+    pop bx
     pop dx
 %endmacro
 
